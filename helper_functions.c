@@ -1,7 +1,8 @@
 #include "shell.h"
 
 /**
- * count_character - Counts the number of occurence of a given character in a string
+ * count_character - Counts the number of occurence of a given character
+ * in a string
  * @str: The string
  * @c: The character to count
  *
@@ -24,7 +25,8 @@ int count_character(char *str, char c)
 
 
 /**
- * build_str - builds a new string using characters between two points in a string
+ * build_str - builds a new string using characters between two points
+ * in a string
  * @str: The Base string
  * @start_pt: The starting character
  * @end_pt: The last character
@@ -39,7 +41,7 @@ char *build_str(char *str, unsigned int start_pt, unsigned int end_pt)
 	j = (end_pt - start_pt) + 2;
 
 	newstr = malloc(sizeof(char) * j);
-	
+
 	while (start_pt <= end_pt)
 	{
 		newstr[i] = str[start_pt];
