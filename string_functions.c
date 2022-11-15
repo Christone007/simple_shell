@@ -79,7 +79,7 @@ char *_strcpy(char *dest, char *src)
  */
 char *_strncpy(char *dest, char *src, int n)
 {
-	unsigned int i;
+	int i;
 
 	i = 0;
 	while (src[i] && i < n)
