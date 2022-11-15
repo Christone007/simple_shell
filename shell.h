@@ -50,7 +50,8 @@ int _strcmp(char *s1, char *s2);
 char **_strsplit(char *str, char delim);
 
 /**
- * count_character - Counts the number of occurence of a given character in a string
+ * count_character - Counts the number of occurence of a given character
+ * in a string
  * @str: The string
  * @c: The character to count
  *
@@ -60,7 +61,8 @@ int count_character(char *str, char c);
 
 
 /**
- * build_str - builds a new string using characters between two points in a string
+ * build_str - builds a new string using characters between two points
+ * in a string
  * @str: The Base string
  * @start_pt: The starting character index
  * @end_pt: The last character index
