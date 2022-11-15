@@ -4,7 +4,7 @@
  * main - Entry point
  * Return: Always 0
  */
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
 	char *linebuffer;
 	size_t n;
@@ -30,31 +30,34 @@ int main(int argc, char **argv)
 		if (result == -1)
 		{
 			perror(argv[0]);
+			free(linebuffer);
 			return (2);
 		}
 
-		splitted_str = _strsplit(linebuffer, '\n');
 		child_pid = fork();
 		if (child_pid == -1)
 		{
 			perror(argv[0]);
+			free(linebuffer);
 			return (2);
 		}
 
 		if (child_pid == 0)
 		{
-			if (execve(splitted_str[0], splitted_str, NULL) == -1)
+			splitted_str = _strsplit(linebuffer, '\n');
+			if (execve(splitted_str[0], argv, env) == -1)
 			{
 				perror(argv[0]);
+				free(linebuffer);
 				return (2);
 			}
+			free(splitted_str[0]);
+			free(splitted_str);
 		}
 		else
 		{
 			wait(NULL);
 		}
-		free(splitted_str[0]);
-		free(splitted_str);
 	}
 	free(linebuffer);
 	return (0);
