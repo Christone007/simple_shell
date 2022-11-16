@@ -51,7 +51,7 @@ int main(int argc, char **argv, char **env)
 			/*Split using the spaces as delimeter*/
 			splitted_str = _strsplit(linebuffer, ' ');
 
-			if (execve(splitted_str[0], argv, env) == -1)
+			if (execve(splitted_str[0], splitted_str, env) == -1)
 			{
 				perror(argv[0]);
 				free(linebuffer);
