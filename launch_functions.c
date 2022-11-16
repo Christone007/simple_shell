@@ -73,7 +73,7 @@ int execute_command(char *pathname, char *linebuffer, char **splitted_str,
 
 	if (child_pid == 0)
 	{
-		path = strcat(pathname, splitted_str[0]);
+		path = _strcat(pathname, splitted_str[0]);
 		if (execve(path, splitted_str, env) == -1)
 		{
 			perror(argv[0]);

@@ -10,18 +10,6 @@
 #include <dirent.h>
 
 /**
- * struct dir_node - Struct for node of directories
- * @d_name: Name of directory
- * @next: Next directory
- * Description: A linked list of directories
- */
-typedef struct directory_node
-{
-	char *d_name;
-	struct directory_node *next;
-} dir_node;
-
-/**
  * _putchar - Print a character
  * @c: Character
  * Return: Number of bytes printed

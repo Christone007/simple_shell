@@ -3,6 +3,9 @@
 
 /**
  * main - Entry point
+ * @argc: Argument count
+ * @argv: Argumets from the terminal
+ * @env: Environment list
  * Return: Always 0
  */
 int main(int argc, char **argv, char **env)
