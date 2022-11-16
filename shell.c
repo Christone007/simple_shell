@@ -34,6 +34,10 @@ int main(int argc, char **argv, char **env)
 			return (2);
 		}
 
+
+		/*Last element of linebuffer('\n) should be replaced with '\0'*/
+		linebuffer[result - 1] = '\0';
+
 		child_pid = fork();
 		if (child_pid == -1)
 		{
@@ -44,7 +48,9 @@ int main(int argc, char **argv, char **env)
 
 		if (child_pid == 0)
 		{
-			splitted_str = _strsplit(linebuffer, '\n');
+			/*Split using the spaces as delimeter*/
+			splitted_str = _strsplit(linebuffer, ' ');
+
 			if (execve(splitted_str[0], argv, env) == -1)
 			{
 				perror(argv[0]);
