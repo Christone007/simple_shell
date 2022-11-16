@@ -3,9 +3,23 @@
 
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+
+/**
+ * struct dir_node - Struct for node of directories
+ * @d_name: Name of directory
+ * @next: Next directory
+ * Description: A linked list of directories
+ */
+typedef struct directory_node
+{
+	char *d_name;
+	struct directory_node *next;
+} dir_node;
 
 /**
  * _putchar - Print a character
@@ -79,5 +93,29 @@ char *build_str(char *str, unsigned int start_pt, unsigned int end_pt);
  * Return: void
  */
 void free_array(char **arr);
+
+/**
+ * launch - Launches the shell prompt
+ * @argv: Arguments from main function
+ * @env: Environment list
+ * Return: Integers as success or error codes
+ */
+int launch(char **argv, char **env);
+
+/**
+ * command_check - Check for the existence of a command
+ * @pathname: Path to the directory
+ * @command: Command to check
+ * Return: 1 if command exist, 0 if it cannot be found
+ */
+int command_check(char *pathname, char *command);
+
+/**
+ * launch - Launches the shell prompt
+ * @argv: Arguments from main function
+ * @env: Environment list
+ * Return: Integers as success or error codes
+ */
+int launch(char **argv, char **env);
 
 #endif

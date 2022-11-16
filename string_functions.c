@@ -25,28 +25,34 @@ unsigned int _strlen(char *s)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int len1, len2;
-	unsigned int i;
+	unsigned int i, diff, len1, len2;
 
+	i = 0;
+	diff = 0;
 	len1 = _strlen(s1);
 	len2 = _strlen(s2);
 
 	if (len1 != len2)
 	{
-		return (len1 - len2);
+		diff = len1 - len2;
+		return (diff);
 	}
 
-	i = 0;
-	while (s1[i])
+	while (s1[i] != '\0')
 	{
-		if (s1[i] - s2[i] != 0)
+		if (s1[i] > s2[i])
 		{
-			return (s1[i] - s2[i]);
+			diff = s1[i] - s2[i];
+			return (diff);
+		}
+		else if (s1[i] < s2[i])
+		{
+			diff = s1[i] - s2[i];
+			return (diff);
 		}
 		i++;
 	}
-
-	return (0);
+	return (diff);
 }
 
 /**
