@@ -64,6 +64,14 @@ int _strcmp(char *s1, char *s2);
 char **_strsplit(char *str, char delim);
 
 /**
+ * _strcat - Concatenate two strings
+ * @dest: String to concatenate to
+ * @src: String to be added
+ * Return: Concatenate string
+ */
+char *_strcat(char *dest, char *src);
+
+/**
  * count_character - Counts the number of occurence of a given character
  * in a string
  * @str: The string
@@ -118,4 +126,15 @@ int command_check(char *pathname, char *command);
  */
 int launch(char **argv, char **env);
 
+/**
+ * execute_command - Fork and Execute
+ * @pathname: Pathname
+ * @linebuffer: Buffer for getline function
+ * @splitted_str: Splitted strings from line buffer
+ * @argv: Main arguments
+ * @env: Enviroment list
+ * Return: Integers
+ */
+int execute_command(char *pathname, char *linebuffer, char **splitted_str,
+		    char **argv, char **env);
 #endif

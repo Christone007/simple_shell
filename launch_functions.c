@@ -10,15 +10,14 @@
  */
 int launch(char **argv, char **env)
 {
-	char *linebuffer, *pathname;
+	char *linebuffer;
 	size_t n;
 	ssize_t result;
-	pid_t child_pid;
 	char prompt[] = "#cisfun$ ";
+	char pathname[] = "/bin/";
 	char **splitted_str;
 	int i;
 
-	(void)env;
 	n = 0;
 	linebuffer = NULL;
 
@@ -33,34 +32,11 @@ int launch(char **argv, char **env)
 
 	linebuffer[result - 1] = '\0';
 	splitted_str = _strsplit(linebuffer, ' ');
-	pathname = "/usr/bin";
 
 	i = command_check(pathname, splitted_str[0]);
-
 	if (i == 1)
 	{
-		child_pid = fork();
-		if (child_pid == -1)
-		{
-			perror(argv[0]);
-			free(linebuffer);
-			return (2);
-		}
-
-		if (child_pid == 0)
-		{
-			if (execve(pathname, splitted_str, env) == -1)
-			{
-				perror(argv[0]);
-				free_array(splitted_str);
-				free(linebuffer);
-				return (2);
-			}
-		}
-		else
-		{
-			wait(NULL);
-		}
+		execute_command(pathname, linebuffer, splitted_str, argv, env);
 	}
 	else
 	{
@@ -73,6 +49,47 @@ int launch(char **argv, char **env)
 }
 
 /**
+ * execute_command - Fork and Execute
+ * @pathname: Pathname
+ * @linebuffer: Buffer for getline function
+ * @splitted_str: Splitted strings from line buffer
+ * @argv: Main arguments
+ * @env: Enviroment list
+ * Return: Integers
+ */
+int execute_command(char *pathname, char *linebuffer, char **splitted_str,
+		    char **argv, char **env)
+{
+	pid_t child_pid;
+	char *path;
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror(argv[0]);
+		free(linebuffer);
+		return (2);
+	}
+
+	if (child_pid == 0)
+	{
+		path = strcat(pathname, splitted_str[0]);
+		if (execve(path, splitted_str, env) == -1)
+		{
+			perror(argv[0]);
+			free_array(splitted_str);
+			free(linebuffer);
+			return (2);
+		}
+	}
+	else
+	{
+		wait(NULL);
+	}
+	return (0);
+}
+
+/**
  * command_check - Check for the existence of a command
  * @pathname: Path to the directory
  * @command: Command to check
@@ -80,17 +97,17 @@ int launch(char **argv, char **env)
  */
 int command_check(char *pathname, char *command)
 {
-        DIR *dir_stream;
-        struct dirent *dir_entry;
+	DIR *dir_stream;
+	struct dirent *dir_entry;
 	int isequal;
 
-        dir_stream = opendir((const char *) pathname);
-        if (dir_stream ==  NULL)
-                return (0);
+	dir_stream = opendir((const char *) pathname);
+	if (dir_stream ==  NULL)
+		return (0);
 
-        dir_entry = readdir(dir_stream);
-        if (dir_entry == NULL)
-                return (0);
+	dir_entry = readdir(dir_stream);
+	if (dir_entry == NULL)
+		return (0);
 
 	while (dir_entry != NULL)
 	{
@@ -102,7 +119,6 @@ int command_check(char *pathname, char *command)
 		}
 		dir_entry = readdir(dir_stream);
 	}
-
 	closedir(dir_stream);
 	return (0);
 }
