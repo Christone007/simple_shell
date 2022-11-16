@@ -53,3 +53,19 @@ char *build_str(char *str, unsigned int start_pt, unsigned int end_pt)
 
 	return (newstr);
 }
+
+/**
+ * free_array - Free all the memory occupied by a NULL terminated array
+ * @arr: The array to free
+ *
+ * Return: void
+ */
+void free_array(char **arr)
+{
+	unsigned int i = 0;
+
+	for (i = 0; arr[i] != NULL; i++)
+		free(arr[i]);
+	free(arr[i]);
+	free(arr);
+}
