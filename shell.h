@@ -10,6 +10,37 @@
 #include <dirent.h>
 
 /**
+ * struct builtin_s - Builtin function struct
+ * @function_name: Name of builtin function
+ * @function_call: Function to be called
+ */
+typedef struct builtin_s
+{
+	char *function_name;
+	void (*function_call)(char **env);
+} builtin_f;
+
+typedef void (*builtin_func)(char **env);
+/**
+ * get_builting_func - Get the builtin function with the specified name
+ * @name: Name of builtin function
+ * Return: The builtin function
+ */
+builtin_func get_builtin_func(char *name);
+
+/**
+ * exit_f - Exit a process
+ * @env: Environment list
+ */
+void exit_f(char **env);
+
+/**
+ * env_f - Prints all the environment list
+ * @env: Environment list
+ */
+void env_f(char **env);
+
+/**
  * _putchar - Print a character
  * @c: Character
  * Return: Number of bytes printed

@@ -10,18 +10,18 @@
  */
 int launch(char **argv, char **env)
 {
-	char *linebuffer;
 	size_t n;
 	ssize_t result;
-	char prompt[] = "#cisfun$ ";
-	char pathname[] = "/bin/";
+	char *linebuffer;
 	char **splitted_str;
-	int i;
+	char pathname[] = "/bin/", prompt[] = "#cisfun$ ";
+	builtin_func builtin_function;
 
 	n = 0;
 	linebuffer = NULL;
 
-	_puts(prompt);
+	if (isatty(0))
+		_puts(prompt);
 	result = getline(&linebuffer, &n, stdin);
 	if (result == -1)
 	{
@@ -33,8 +33,12 @@ int launch(char **argv, char **env)
 	linebuffer[result - 1] = '\0';
 	splitted_str = _strsplit(linebuffer, ' ');
 
-	i = command_check(pathname, splitted_str[0]);
-	if (i == 1)
+	builtin_function = get_builtin_func(splitted_str[0]);
+	if (builtin_function)
+	{
+		builtin_function(env);
+	}
+	if (command_check(pathname, splitted_str[0]) == 1)
 	{
 		execute_command(pathname, linebuffer, splitted_str, argv, env);
 	}
