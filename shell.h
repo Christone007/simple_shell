@@ -71,4 +71,13 @@ int count_character(char *str, char c);
  */
 char *build_str(char *str, unsigned int start_pt, unsigned int end_pt);
 
+
+/**
+ * free_array - Free all the memory occupied by a NULL terminated array
+ * @arr: The array to free
+ *
+ * Return: void
+ */
+void free_array(char **arr);
+
 #endif

@@ -35,11 +35,6 @@ int main(int argc, char **argv, char **env)
 			return (2);
 		}
 
-		if (linebuffer[0] == 4)
-		{
-			printf("Ctrl + D\n");
-		}
-
 		/*Last element of linebuffer('\n) should be replaced with '\0'*/
 		linebuffer[result - 1] = '\0';
 
@@ -59,12 +54,7 @@ int main(int argc, char **argv, char **env)
 			if (execve(splitted_str[0], splitted_str, env) == -1)
 			{
 				perror(argv[0]);
-				for (i =0; splitted_str[i] != NULL; i++)
-				{
-					free(splitted_str[i]);
-				}
-				free(splitted_str[i]);
-				free(splitted_str);
+				free_array(splitted_str);
 				free(linebuffer);
 				
 				return (2);
