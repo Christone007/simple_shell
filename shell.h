@@ -122,6 +122,13 @@ char *build_str(char *str, unsigned int start_pt, unsigned int end_pt);
 void free_array(char **arr);
 
 /**
+ * path_to_cmd - Check if a command is a path
+ * @command: Command to check
+ * Return: new command
+ */
+char *path_to_cmd(char *command);
+
+/**
  * launch - Launches the shell prompt
  * @argv: Arguments from main function
  * @env: Environment list
@@ -138,22 +145,17 @@ int launch(char **argv, char **env);
 int command_check(char *pathname, char *command);
 
 /**
- * launch - Launches the shell prompt
- * @argv: Arguments from main function
- * @env: Environment list
- * Return: Integers as success or error codes
- */
-int launch(char **argv, char **env);
-
-/**
  * execute_command - Fork and Execute
  * @pathname: Pathname
+ * @command: Command to execute
  * @linebuffer: Buffer for getline function
  * @splitted_str: Splitted strings from line buffer
  * @argv: Main arguments
  * @env: Enviroment list
  * Return: Integers
  */
-int execute_command(char *pathname, char *linebuffer, char **splitted_str,
+int execute_command(char *pathname, char *command,
+		    char **linebuffer, char ***splitted_str,
 		    char **argv, char **env);
+
 #endif

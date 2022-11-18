@@ -23,6 +23,8 @@ int main(int argc, char **argv, char **env)
 	while (EOF)
 	{
 		ret_val = launch(argv, env);
+		if (ret_val == 10)
+			return (0);
 		if (ret_val)
 			return (ret_val);
 	}

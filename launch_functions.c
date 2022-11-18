@@ -12,56 +12,76 @@ int launch(char **argv, char **env)
 {
 	size_t n;
 	ssize_t result;
-	char *linebuffer;
-	char **splitted_str;
+	char *linebuffer, *command, **splitted_str;
 	char pathname[] = "/bin/", prompt[] = "#cisfun$ ";
 	builtin_func builtin_function;
 
 	n = 0;
 	linebuffer = NULL;
-
 	if (isatty(0))
 		_puts(prompt);
 	result = getline(&linebuffer, &n, stdin);
 	if (result == -1)
 	{
-		perror(argv[0]);
 		free(linebuffer);
-		return (2);
+		return (10);
 	}
-
 	linebuffer[result - 1] = '\0';
 	splitted_str = _strsplit(linebuffer, ' ');
-
-	builtin_function = get_builtin_func(splitted_str[0]);
+	command = splitted_str[0];
+	if (path_to_cmd(command) != NULL)
+		command = path_to_cmd(command);
+	builtin_function = get_builtin_func(command);
 	if (builtin_function)
 	{
+		free_array(splitted_str);
+		free(linebuffer);
 		builtin_function(env);
 	}
-	if (command_check(pathname, splitted_str[0]) == 1)
+	if (command_check(pathname, command) == 1)
 	{
-		execute_command(pathname, linebuffer, splitted_str, argv, env);
+		execute_command(pathname, command, &linebuffer,
+				&splitted_str, argv, env);
+		free_array(splitted_str);
 	}
 	else
 	{
-		_puts(argv[0]);
-		_puts(": command not found");
-		_putchar('\n');
+		printf("%s: command not found\n", argv[0]);
 	}
 	free(linebuffer);
 	return (0);
 }
 
 /**
+ * path_to_cmd - Check if a command is a path
+ * @command: Command to check
+ * Return: new command
+ */
+char *path_to_cmd(char *command)
+{
+	if (*command == '/')
+	{
+		command++;
+		while (*command != '/')
+			command++;
+		command++;
+		return (command);
+	}
+	return (NULL);
+}
+
+/**
  * execute_command - Fork and Execute
  * @pathname: Pathname
+ * @command: Command to execute
  * @linebuffer: Buffer for getline function
  * @splitted_str: Splitted strings from line buffer
  * @argv: Main arguments
  * @env: Enviroment list
  * Return: Integers
  */
-int execute_command(char *pathname, char *linebuffer, char **splitted_str,
+int execute_command(char *pathname, char *command,
+		    char **linebuffer, char ***splitted_str,
 		    char **argv, char **env)
 {
 	pid_t child_pid;
@@ -71,18 +91,18 @@ int execute_command(char *pathname, char *linebuffer, char **splitted_str,
 	if (child_pid == -1)
 	{
 		perror(argv[0]);
-		free(linebuffer);
+		free(*linebuffer);
 		return (2);
 	}
 
 	if (child_pid == 0)
 	{
-		path = _strcat(pathname, splitted_str[0]);
-		if (execve(path, splitted_str, env) == -1)
+		path = _strcat(pathname, command);
+		if (execve(path, *splitted_str, env) == -1)
 		{
 			perror(argv[0]);
-			free_array(splitted_str);
-			free(linebuffer);
+			free_array(*splitted_str);
+			free(*linebuffer);
 			return (2);
 		}
 	}
